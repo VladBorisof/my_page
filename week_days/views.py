@@ -17,6 +17,23 @@ week_days_dict = {
 }
 
 
+def index(request):
+    week_days = list(week_days_dict)
+    day = ''
+    for i in week_days:
+        redirect_path = reverse('week_day-name', args=[i])
+        day += f'<li> <a href={redirect_path}> {i.title()} </a> </li>'
+    response = f"""
+    <center> 
+        <h1> Day of week </h1> </center>
+        <ul>
+            {day}
+        </ul>
+    """
+
+    return HttpResponse(response)
+
+
 def get_week_day(request, week_day: str):
     to_do = week_days_dict.get(week_day)
     if to_do:
