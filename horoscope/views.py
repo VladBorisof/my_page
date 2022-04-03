@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+from zodiac_sign import get_zodiac_sign
 
 # Create your views here.
 zodiac_dict = {
@@ -53,6 +54,15 @@ def get_view_by_tipes(request):
             </ol>
             """
     return HttpResponse(response)
+
+
+def get_zodiac_by_day(request, month: int, day: int):
+    if (month < 1 or month > 12) or (day < 1 or day > 31):
+        return HttpResponseNotFound("<h1> Перебор по дням </h1>")
+    else:
+        zodiac_by_day = get_zodiac_sign(day, month).lower()
+        redirect_url = reverse('horoscope-name', args=(zodiac_by_day, ))
+        return HttpResponseRedirect(redirect_url)
 
 
 def get_info_by_tipes(request, tipe: str):
